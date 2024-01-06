@@ -8,11 +8,10 @@ export default async function Users() {
     if (!session) {
       return redirect("/login");
     } 
-
   return (
     <div>
       <h1>Table Users</h1>
-      <UsersTable/>
+      <UsersTable />
     </div>
   );
 }

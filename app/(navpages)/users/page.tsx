@@ -1,18 +1,15 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/utils/auth";
-import UsersTable from "@/components/user.table";
+import UsersTable from "@/components/users/user.table";
 
 export default async function Users(props:any) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return redirect("/login");
   }
-  //Original pagination
-  const LIMIT = 2
-  const page = props?.searchParams?.page ?? 1
-  
-  const res = await fetch(`http://localhost:3001/api/user?page=_${page}&_limit=${LIMIT}`, {
+
+  const res = await fetch(`${process.env.API_URL}/user/read`, {
     method: "GET"
   });
   const userList: [] = await res.json();

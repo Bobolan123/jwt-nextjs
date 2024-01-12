@@ -65,7 +65,7 @@ export default function TableUsers(props:any) {
 
   const userList: [] = props.users
   return (
-    <Paper sx={{ width: "100%" }}>
+    <Paper className="mt-5" sx={{ width: "100%" }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>

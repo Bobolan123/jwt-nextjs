@@ -17,7 +17,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 
-const pages = ["Users", "Pricing", "Blog"];
+const pages = ["Users", "Roles", "GroupRole"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {

@@ -17,29 +17,43 @@ import {
 export default function SelectGroupForm(props: any) {
   const [selectGroup, setSelectGroup] = React.useState("");
   const groups = props.groups;
-  const [roles, setRoles] = React.useState([{ url: "adsf" }]);
+  const [roles, setRoles] = React.useState([]);
 
   function handleChange(groupId: any): void {
     setSelectGroup(groupId);
   }
-
-  React.useEffect(() => { 
-    const fetchData = async () => {
-      //read all the role related to groups
-      const tempRoles = await props.fetchRoles(selectGroup);
-      setRoles(tempRoles);
-
-      //read all roles
-      const response = await fetch(`http://localhost:3001/api/role/read`, {
-        method: "GET",
-      });
-      const roles = await response.json();
-      setRoles(roles);
-      console.log(roles);
-    };
-
+  const fetchData = async () => {
+    //read all roles
+    const response = await fetch(`http://localhost:3001/api/role/read`, {
+      method: "GET",
+    });
+    const roles = await response.json();
+    setRoles(roles);
+  };
+  React.useEffect(() => {
     fetchData();
   }, [selectGroup]);
+
+  const handleCheckBox = async (groupId: any, role: any) => {
+    role.groups = [{ id: groupId }];
+    const updateGroupInRole = await fetch(
+      `http://localhost:3001/api/role/update/${role.id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          url: role.url,
+          description: role.description,
+          groupIds: [{ id: groupId }],
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (updateGroupInRole) {
+      fetchData();
+    }
+  };
 
   return (
     <div>
@@ -98,6 +112,7 @@ export default function SelectGroupForm(props: any) {
                 key={role.url}
                 control={
                   <Checkbox
+                    onClick={() => handleCheckBox(selectGroup, role)}
                     checked={
                       selectGroup &&
                       role.groups &&
@@ -111,7 +126,7 @@ export default function SelectGroupForm(props: any) {
           ) : (
             <Typography>No roles available</Typography>
           )}
-          <Button>Save</Button>
+          <Button className="w-20 bg-cyan-600 text-neutral-50">Save</Button>
         </FormGroup>
       </Box>
     </div>

@@ -32,7 +32,7 @@ export default async function SignUp() {
     };
     
     try {
-      const res = await fetch('http://localhost:3001/api/user/',{
+      const res = await fetch('http://localhost:3001/api/user/create',{
         method: 'POST',
         body: JSON.stringify(newUser),
         headers: {
@@ -40,8 +40,7 @@ export default async function SignUp() {
         }
       })
       if(res.ok){
-        // router.push('/login')
-        console.log(res.json)
+        router.push('/login')
       }
     } catch (error) {
         console.log("err ", error)

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import AddUrlForm from '@/components/roles/addURL.form';
 import UrlTable from '@/components/roles/url.table';
-
+import { getCookie } from 'cookies-next';
 import { Container } from '@mui/material';
 
 interface ApiUrl {
@@ -17,11 +17,16 @@ interface ApiUrl {
 
 export default function Roles(props: any) {
   const [urls, setUrls] = useState<ApiUrl[]>([]);
+  const access_token = getCookie('jwt')
+  console.log(access_token)
 
   const fetchData = async () => {
     try {
       const res = await fetch(`http://localhost:3001/api/role/read`, {
         method: 'GET',
+        headers: {
+          'authorization': `Bearer ${access_token}`
+        }
       });
       const data: ApiUrl[] = await res.json();
       setUrls(data || []);

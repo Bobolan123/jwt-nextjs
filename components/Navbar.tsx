@@ -16,6 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { deleteCookie } from 'cookies-next';
 
 const pages = ["Users", "Roles", "GroupRole"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -45,6 +46,7 @@ function ResponsiveAppBar() {
 
   const handleLogOut = (titleProfile:string) => {
     if (titleProfile === 'Logout') {
+      deleteCookie('jwt')
       signOut({callbackUrl:`/login`})
     }
   };

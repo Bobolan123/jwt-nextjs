@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { PlusCircle } from "lucide-react";
+import { getCookie } from "cookies-next";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -18,9 +19,12 @@ export default function AddUrlForm(props:any) {
       description: data.get("description"),
       groupIds: []
     };
+
+    const access_token = getCookie('jwt')
     const res = await fetch(`http://localhost:3001/api/role/create`, {
       headers: {
         "Content-Type": "application/json",
+        'authorization': `Bearer ${access_token}`
       },
       method: "POST",
       body: JSON.stringify(userAcc),

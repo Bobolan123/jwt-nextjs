@@ -13,11 +13,13 @@ import {
   Select,
   Typography,
 } from "@mui/material";
+import { getCookie } from 'cookies-next';
 
 export default function SelectGroupForm(props: any) {
   const [selectGroup, setSelectGroup] = React.useState("");
   const groups = props.groups;
   const [roles, setRoles] = React.useState([]);
+  const access_token = getCookie('jwt')
 
   function handleChange(groupId: any): void {
     setSelectGroup(groupId);
@@ -26,6 +28,9 @@ export default function SelectGroupForm(props: any) {
     //read all roles
     const response = await fetch(`http://localhost:3001/api/role/read`, {
       method: "GET",
+      headers: {
+        'authorization': `Bearer ${access_token}`
+      }
     });
     const roles = await response.json();
     setRoles(roles);
@@ -47,6 +52,7 @@ export default function SelectGroupForm(props: any) {
         }),
         headers: {
           "Content-Type": "application/json",
+            'authorization': `Bearer ${access_token}`
         },
       }
     );

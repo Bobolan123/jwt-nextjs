@@ -24,11 +24,11 @@ export const authOptions = {
       },
       async authorize(credentials:any) {
         const userAcc = {
-          email: credentials.email,
+          username: credentials.email,
           password: credentials.password,
         };
         
-        const res = await fetch('http://localhost:3001/api/user/login',{
+        const res = await fetch('http://localhost:3001/auth/login',{
           method: 'POST',
           body: JSON.stringify(userAcc),
           headers: {
@@ -36,14 +36,24 @@ export const authOptions = {
           }
         })
         const data = await res.json()
-
-        if (userAcc.password === data.password) {
-          return data;
+        
+        if (data && data.access_token) {
+          return data
         } else {
-          return null;
+          null
         }
       },
     }),
   ],
+
+  callbacks: {
+    async jwt({token, user}) {
+      if (user) return {...token, ...user}
+
+      return token
+    }
+
+  },  
+
   secret: process.env.NEXTAUTH_SECRET,
 } satisfies NextAuthOptions;

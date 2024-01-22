@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Trash2 } from "lucide-react";
 import { Button } from '@mui/material';
+import { getCookie } from 'cookies-next';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -39,12 +40,14 @@ interface IURL {
 }
 export default function UrlTable(props:any) {//CustomizedTables
     const urls:IURL[] = props.urls
-    
     const handleDeleteButton = async (id:number) => {
+        const access_token = getCookie('jwt')
         const deleteUrl = await fetch(`http://localhost:3001/api/role/delete/${id}`, {
             method:'DELETE',
+            headers: {
+              'authorization': `Bearer ${access_token}`
+            }
         })
-        console.log(await deleteUrl.json())
         props.handleRerende()
         
     }
